@@ -84,12 +84,15 @@ public class HandleViewAnnatation extends AbstractProcessor {
                         field.getFieldName(), ClassName.get(field.getFieldType()), field.getResId());
             }
             MethodSpec bindViewMethodsSpec = bindViewMethodsSpecBuilder.build();
-            MethodSpec unBindMethodSpec = MethodSpec.methodBuilder("unBindView")
+            MethodSpec.Builder unBindMethodSpecBuilder = MethodSpec.methodBuilder("unBindView")
                     .addModifiers(Modifier.PUBLIC)
                     .addAnnotation(Override.class)
                     .addParameter(TypeName.get(typeElement.asType()), "host")
-                    .returns(void.class)
-                    .build();
+                    .returns(void.class);
+            for(BindViewField field : fieldList) {
+                unBindMethodSpecBuilder.addStatement("host.$N = null", field.getFieldName());
+            }
+            MethodSpec unBindMethodSpec = unBindMethodSpecBuilder.build();
             TypeSpec typeSpec = TypeSpec.classBuilder(typeElement.getSimpleName() + "$BindView")
                     .addModifiers(Modifier.PUBLIC)
                     .addMethod(bindViewMethodsSpec)
