@@ -97,6 +97,8 @@ public class HandleViewAnnatation extends AbstractProcessor {
                     .addSuperinterface(ParameterizedTypeName.get(ClassTypeName.bindView, TypeName.get(typeElement.asType())))
                     .build();
             String packName = elements.getPackageOf(typeElement).getQualifiedName().toString();
+            System.out.println("asType: " + typeElement.asType());
+            System.out.println("packageInfo: " + elements.getPackageOf(typeElement).getQualifiedName().toString());
 
             return JavaFile.builder(packName, typeSpec).build();
         }
@@ -128,6 +130,7 @@ public class HandleViewAnnatation extends AbstractProcessor {
         }
 
         public TypeMirror getFieldType() {
+            System.out.println("Field: " + annotationField.asType());
             return annotationField.asType();
         }
     }
